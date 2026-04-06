@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSA Card Grading</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1a1a2e;
+      --accent: #e94560;
+      --accent-hover: #c73650;
+      --surface: #16213e;
+      --surface-light: #1e2d50;
+      --text: #eaeaea;
+      --text-muted: #a0a0b8;
+      --gold: #d4af37;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--primary);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--surface);
+      border-bottom: 2px solid var(--gold);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--gold);
+    }
+    .logo span { color: var(--text); font-weight: 300; font-size: 0.9rem; letter-spacing: 1px; }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--primary) 100%);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .hero h1 .highlight { color: var(--gold); }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .hero .cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.85rem 2.5rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .hero .cta:hover { background: var(--accent-hover); transform: translateY(-2px); }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    .feature {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid var(--surface-light);
+    }
+    .feature .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .feature h3 { color: var(--gold); margin-bottom: 0.5rem; }
+    .feature p { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* FORM SECTION */
+    .form-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+    .form-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .form-section .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    form {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      border: 1px solid var(--surface-light);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+    label .req { color: var(--accent); }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--surface-light);
+      border-radius: 6px;
+      background: var(--primary);
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    textarea { resize: vertical; min-height: 100px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    /* FILE UPLOAD */
+    .file-upload {
+      border: 2px dashed var(--surface-light);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .file-upload:hover, .file-upload.dragover {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.05);
+    }
+    .file-upload input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .file-upload .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .file-upload p { color: var(--text-muted); font-size: 0.9rem; }
+    .file-upload .file-names {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--gold);
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 0.5rem;
+    }
+    .submit-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--surface-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">BSA <span>Card Grading</span></div>
+    <div>
+      <a href="#features">Why BSA</a>
+      <a href="#submit">Submit Cards</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Professional <span class="highlight">Card Grading</span> You Can Trust</h1>
+    <p>Get your trading cards authenticated and graded by BSA's expert team. Fast turnaround, transparent process, trusted results.</p>
+    <a href="#submit" class="cta">Submit Your Cards</a>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="feature">
+      <div class="icon">🔍</div>
+      <h3>Expert Authentication</h3>
+      <p>Our trained specialists verify authenticity and assess condition with precision.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h3>Fast Turnaround</h3>
+      <p>Standard grading completed within 10 business days. Rush options available.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🛡️</div>
+      <h3>Tamper-Proof Slabs</h3>
+      <p>Cards are encased in ultrasonically sealed holders with unique cert numbers.</p>
+    </div>
+  </section>
+
+  <!-- SUBMISSION FORM -->
+  <section class="form-section" id="submit">
+    <h2>Submit Your Cards</h2>
+    <p class="subtitle">Fill out the form below and upload photos of your card(s). We'll follow up via email.</p>
+
+    <form action="https://formsubmit.co/kealjones+bsa@gmail.com" method="POST" enctype="multipart/form-data">
+      <!-- FormSubmit config -->
+      <input type="hidden" name="_subject" value="New BSA Card Grading Submission">
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" style="display:none">
+
+      <!-- Contact Info -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" name="name" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" name="email" required placeholder="you@email.com">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" name="phone" placeholder="(555) 123-4567">
+        </div>
+        <div class="form-group">
+          <label>Service Level <span class="req">*</span></label>
+          <select name="service_level" required>
+            <option value="" disabled selected>Select...</option>
+            <option value="standard">Standard (10 business days)</option>
+            <option value="express">Express (5 business days)</option>
+            <option value="rush">Rush (2 business days)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Card Details -->
+      <div class="form-group">
+        <label>Card Name / Title <span class="req">*</span></label>
+        <input type="text" name="card_name" required placeholder="e.g. 1st Edition Charizard Holo">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Card Year</label>
+          <input type="text" name="card_year" placeholder="e.g. 1999">
+        </div>
+        <div class="form-group">
+          <label>Card Set / Brand</label>
+          <input type="text" name="card_set" placeholder="e.g. Base Set, Topps Chrome">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" name="card_number" placeholder="e.g. #4/102">
+        </div>
+        <div class="form-group">
+          <label>Category <span class="req">*</span></label>
+          <select name="category" required>
+            <option value="" disabled selected>Select...</option>
+            <option value="pokemon">Pokémon</option>
+            <option value="sports">Sports</option>
+            <option value="magic">Magic: The Gathering</option>
+            <option value="yugioh">Yu-Gi-Oh!</option>
+            <option value="other">Other TCG</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Notes</label>
+        <textarea name="notes" placeholder="Any extra details about the card, known flaws, special requests..."></textarea>
+      </div>
+
+      <!-- Photo Upload -->
+      <div class="form-group">
+        <label>Card Photos <span class="req">*</span></label>
+        <div class="file-upload" id="dropZone">
+          <div class="upload-icon">📷</div>
+          <p><strong>Click or drag &amp; drop</strong> to upload front &amp; back photos</p>
+          <p>JPG, PNG, or WEBP — max 10MB each</p>
+          <input type="file" name="attachment" accept="image/*" multiple required id="fileInput">
+          <div class="file-names" id="fileNames"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit for Grading</button>
+    </form>
+  </section>
+
+  <footer>
+    &copy; 2026 BSA Card Grading. All rights reserved.
+  </footer>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileNames = document.getElementById('fileNames');
+    const dropZone = document.getElementById('dropZone');
+
+    fileInput.addEventListener('change', updateFileNames);
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      fileInput.files = e.dataTransfer.files;
+      updateFileNames();
+    });
+
+    function updateFileNames() {
+      const names = Array.from(fileInput.files).map(f => f.name);
+      fileNames.textContent = names.length ? names.join(', ') : '';
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
