@@ -233,7 +233,7 @@
   <!-- HERO -->
   <section class="hero">
     <h1>"Professional" and "Consistent" <span class="highlight">Card Grading</span></h1>
-    <p>Get your trading cards graded by BSA's "expert" team.</p><p>"Fast" turnaround, opaque process, results.</p>
+    <p>Get your trading cards graded by BSA's "expert" team. "Fast" turnaround, opaque process, results.</p>
     <a href="#submit" class="cta">Submit Your Cards</a>
   </section>
 
@@ -259,7 +259,7 @@
   <!-- SUBMISSION FORM -->
   <section class="form-section" id="submit">
     <h2>Submit Your Cards For Grading</h2>
-    <p class="subtitle">Fill out the form below and upload photos of your card(s). We'll follow up via email.</p>
+    <p class="subtitle">Please fill out this form to submit your cards for grading. We will reply to your email, when we get to it, with further details to complete submission and process payment. </p>
 
     <iframe
       id="JotFormIFrame-260955340050046"
@@ -283,26 +283,6 @@
   </footer>
 
   <script>
-    const fileInput = document.getElementById('fileInput');
-    const fileNames = document.getElementById('fileNames');
-    const dropZone = document.getElementById('dropZone');
-
-    fileInput.addEventListener('change', updateFileNames);
-
-    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', e => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      fileInput.files = e.dataTransfer.files;
-      updateFileNames();
-    });
-
-    function updateFileNames() {
-      const names = Array.from(fileInput.files).map(f => f.name);
-      fileNames.textContent = names.length ? names.join(', ') : '';
-    }
-
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
